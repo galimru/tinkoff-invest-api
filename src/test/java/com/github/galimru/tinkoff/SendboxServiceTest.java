@@ -4,8 +4,7 @@ import com.github.galimru.tinkoff.exceptions.ApiException;
 import com.github.galimru.tinkoff.http.Level;
 import com.github.galimru.tinkoff.json.common.BrokerAccountType;
 import com.github.galimru.tinkoff.json.common.Currency;
-import com.github.galimru.tinkoff.json.common.EmptyResponse;
-import com.github.galimru.tinkoff.json.sandbox.SandboxRegisterResponse;
+import com.github.galimru.tinkoff.json.sandbox.SandboxAccount;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,47 +26,34 @@ public class SendboxServiceTest {
     }
 
     @Test
-    public void registerShouldCreateBrokerAccount() throws IOException, ApiException {
-        SandboxRegisterResponse response = client.sandbox()
+    public void registerShouldReturnOk() throws IOException, ApiException {
+        SandboxAccount account = client.sandbox()
                 .register(BrokerAccountType.TINKOFF);
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
-        Assert.assertNotNull(response.getPayload().getBrokerAccountId());
+        Assert.assertNotNull(account);
     }
 
     @Test
     public void setCurrencyBalanceShouldReturnOk() throws IOException, ApiException {
         client.sandbox().register(BrokerAccountType.TINKOFF);
-        EmptyResponse response = client
-                .sandbox()
-                .setCurrencyBalance(Currency.USD, new BigDecimal("54.34"));
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        client.sandbox().setCurrencyBalance(Currency.USD, new BigDecimal("54.34"));
     }
 
     @Test
     public void setPositionBalanceShouldReturnOk() throws IOException, ApiException {
         client.sandbox().register(BrokerAccountType.TINKOFF);
-        EmptyResponse response = client
-                .sandbox()
-                .setPositionBalance(TestConstants.SPCE_FIGI, new BigDecimal("54.34"));
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        client.sandbox().setPositionBalance(TestConstants.SPCE_FIGI, new BigDecimal("54.34"));
     }
 
     @Test
     public void removeShouldReturnOk() throws IOException, ApiException {
         client.sandbox().register(BrokerAccountType.TINKOFF);
-        EmptyResponse response = client
-                .sandbox()
-                .remove();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        client.sandbox().remove();
     }
 
     @Test
     public void clearShouldReturnOk() throws IOException, ApiException {
         client.sandbox().register(BrokerAccountType.TINKOFF);
-        EmptyResponse response = client
-                .sandbox()
-                .clear();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        client.sandbox().clear();
     }
 
 }

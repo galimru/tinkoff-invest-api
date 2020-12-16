@@ -2,7 +2,7 @@ package com.github.galimru.tinkoff;
 
 import com.github.galimru.tinkoff.exceptions.ApiException;
 import com.github.galimru.tinkoff.http.Level;
-import com.github.galimru.tinkoff.json.operations.OperationsResponse;
+import com.github.galimru.tinkoff.json.operations.Operations;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,10 +27,10 @@ public class OperationsServiceTest {
 
     @Test
     public void getShouldReturnOk() throws IOException, ApiException, ParseException {
-        OperationsResponse response = client.operations().get(
+        Operations operations = client.operations().get(
                 convertToDate("01/12/2020 10:00"),
                 convertToDate("31/12/2020 10:00"));
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        Assert.assertNotNull(operations);
     }
 
     private Date convertToDate(String str) throws ParseException {

@@ -2,8 +2,8 @@ package com.github.galimru.tinkoff;
 
 import com.github.galimru.tinkoff.exceptions.ApiException;
 import com.github.galimru.tinkoff.http.Level;
-import com.github.galimru.tinkoff.json.portfolio.PortfolioCurrenciesResponse;
-import com.github.galimru.tinkoff.json.portfolio.PortfolioResponse;
+import com.github.galimru.tinkoff.json.portfolio.Currencies;
+import com.github.galimru.tinkoff.json.portfolio.Portfolio;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,17 +25,17 @@ public class PortfolioServiceTest {
 
     @Test
     public void getShouldReturnOk() throws IOException, ApiException {
-        PortfolioResponse response = client
+        Portfolio portfolio = client
                 .portfolio()
                 .get();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        Assert.assertNotNull(portfolio);
     }
 
     @Test
     public void getCurrenciesShouldReturnOk() throws IOException, ApiException {
-        PortfolioCurrenciesResponse response = client.portfolio()
+        Currencies currencies = client.portfolio()
                 .getCurrencies();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        Assert.assertNotNull(currencies);
     }
 
 }

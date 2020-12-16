@@ -8,11 +8,11 @@ import com.google.gson.Gson;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class ErrorUtil {
+public class HttpUtil {
 
     private final static Gson gson = new Gson();
 
-    private ErrorUtil() {
+    private HttpUtil() {
     }
 
     public static void throwErrorIfNeeded(Response<?> response) throws ApiException {

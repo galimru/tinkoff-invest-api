@@ -2,9 +2,11 @@ package com.github.galimru.tinkoff.services;
 
 import com.github.galimru.tinkoff.api.PortfolioApi;
 import com.github.galimru.tinkoff.exceptions.ApiException;
+import com.github.galimru.tinkoff.json.portfolio.Currencies;
+import com.github.galimru.tinkoff.json.portfolio.Portfolio;
 import com.github.galimru.tinkoff.json.portfolio.PortfolioCurrenciesResponse;
 import com.github.galimru.tinkoff.json.portfolio.PortfolioResponse;
-import com.github.galimru.tinkoff.utils.ErrorUtil;
+import com.github.galimru.tinkoff.utils.HttpUtil;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -18,25 +20,27 @@ public class PortfolioService {
         this.api = retrofit.create(PortfolioApi.class);
     }
 
-    public PortfolioResponse get() throws IOException, ApiException {
+    public Portfolio get() throws IOException, ApiException {
         return get(null);
     }
 
-    public PortfolioResponse get(String brokerAccountId) throws IOException, ApiException {
+    public Portfolio get(String brokerAccountId) throws IOException, ApiException {
         Response<PortfolioResponse> response = api.get(brokerAccountId).execute();
 
-        ErrorUtil.throwErrorIfNeeded(response);
-        return response.body();
+        HttpUtil.throwErrorIfNeeded(response);
+        assert response.body() != null;
+        return response.body().getPayload();
     }
 
-    public PortfolioCurrenciesResponse getCurrencies() throws IOException, ApiException {
+    public Currencies getCurrencies() throws IOException, ApiException {
         return getCurrencies(null);
     }
 
-    public PortfolioCurrenciesResponse getCurrencies(String brokerAccountId) throws IOException, ApiException {
+    public Currencies getCurrencies(String brokerAccountId) throws IOException, ApiException {
         Response<PortfolioCurrenciesResponse> response = api.currencies(brokerAccountId).execute();
 
-        ErrorUtil.throwErrorIfNeeded(response);
-        return response.body();
+        HttpUtil.throwErrorIfNeeded(response);
+        assert response.body() != null;
+        return response.body().getPayload();
     }
 }

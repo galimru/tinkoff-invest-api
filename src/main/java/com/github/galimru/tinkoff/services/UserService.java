@@ -2,8 +2,9 @@ package com.github.galimru.tinkoff.services;
 
 import com.github.galimru.tinkoff.api.UserApi;
 import com.github.galimru.tinkoff.exceptions.ApiException;
+import com.github.galimru.tinkoff.json.user.UserAccounts;
 import com.github.galimru.tinkoff.json.user.UserAccountsResponse;
-import com.github.galimru.tinkoff.utils.ErrorUtil;
+import com.github.galimru.tinkoff.utils.HttpUtil;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -17,10 +18,11 @@ public class UserService {
         this.api = retrofit.create(UserApi.class);
     }
 
-    public UserAccountsResponse accounts() throws IOException, ApiException {
+    public UserAccounts accounts() throws IOException, ApiException {
         Response<UserAccountsResponse> response = api.accounts().execute();
 
-        ErrorUtil.throwErrorIfNeeded(response);
-        return response.body();
+        HttpUtil.throwErrorIfNeeded(response);
+        assert response.body() != null;
+        return response.body().getPayload();
     }
 }

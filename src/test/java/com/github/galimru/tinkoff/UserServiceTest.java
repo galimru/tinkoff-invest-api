@@ -2,7 +2,7 @@ package com.github.galimru.tinkoff;
 
 import com.github.galimru.tinkoff.exceptions.ApiException;
 import com.github.galimru.tinkoff.http.Level;
-import com.github.galimru.tinkoff.json.user.UserAccountsResponse;
+import com.github.galimru.tinkoff.json.user.UserAccounts;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +24,8 @@ public class UserServiceTest {
 
     @Test
     public void accountsShouldReturnOk() throws IOException, ApiException {
-        UserAccountsResponse response = client.user().accounts();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        UserAccounts accounts = client.user().accounts();
+        Assert.assertNotNull(accounts);
     }
 
 }

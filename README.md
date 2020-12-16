@@ -41,9 +41,9 @@ _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpa
     client.sandbox()
             .setCurrencyBalance(Currency.USD, BigDecimal.valueOf(1000.55));
     // search figi by ticker TSLA (Tesla)
-    MarketInstrumentListResponse searchResponse = client.market()
+    MarketInstrumentList resultList = client.market()
             .searchByTicker("TSLA");
-    String figi = searchResponse.getPayload().getInstruments().get(0).getFigi();
+    String figi = resultList.getInstruments().get(0).getFigi();
     // buy 1 lot of Tesla using market order
     client.orders()
             .place(MarketOrder

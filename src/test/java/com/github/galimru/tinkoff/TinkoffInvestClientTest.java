@@ -3,7 +3,7 @@ package com.github.galimru.tinkoff;
 import com.github.galimru.tinkoff.exceptions.ApiException;
 import com.github.galimru.tinkoff.json.common.BrokerAccountType;
 import com.github.galimru.tinkoff.json.common.Currency;
-import com.github.galimru.tinkoff.json.market.MarketInstrumentListResponse;
+import com.github.galimru.tinkoff.json.market.MarketInstrumentList;
 import com.github.galimru.tinkoff.services.LimitOrder;
 import com.github.galimru.tinkoff.services.MarketOrder;
 import org.junit.Test;
@@ -34,9 +34,9 @@ public class TinkoffInvestClientTest {
         client.sandbox()
                 .setCurrencyBalance(Currency.USD, BigDecimal.valueOf(1000.55));
         // search figi by ticker TSLA (Tesla)
-        MarketInstrumentListResponse searchResponse = client.market()
+        MarketInstrumentList resultList = client.market()
                 .searchByTicker("TSLA");
-        String figi = searchResponse.getPayload().getInstruments().get(0).getFigi();
+        String figi = resultList.getInstruments().get(0).getFigi();
         // buy 1 lot of Tesla using market order
         client.orders()
                 .place(MarketOrder

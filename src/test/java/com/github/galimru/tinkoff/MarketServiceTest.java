@@ -27,54 +27,54 @@ public class MarketServiceTest {
 
     @Test
     public void stocksShouldReturnOk() throws IOException, ApiException {
-        MarketInstrumentListResponse response = client.market().stocks();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        MarketInstrumentList stocks = client.market().stocks();
+        Assert.assertNotNull(stocks);
     }
 
     @Test
     public void bondsShouldReturnOk() throws IOException, ApiException {
-        MarketInstrumentListResponse response = client.market().bonds();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        MarketInstrumentList bounds = client.market().bonds();
+        Assert.assertNotNull(bounds);
     }
 
     @Test
     public void etfsShouldReturnOk() throws IOException, ApiException {
-        MarketInstrumentListResponse response = client.market().etfs();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        MarketInstrumentList etfs = client.market().etfs();
+        Assert.assertNotNull(etfs);
     }
 
     @Test
     public void currenciesShouldReturnOk() throws IOException, ApiException {
-        MarketInstrumentListResponse response = client.market().currencies();
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        MarketInstrumentList currencies = client.market().currencies();
+        Assert.assertNotNull(currencies);
     }
 
     @Test
     public void orderbookShouldReturnOk() throws IOException, ApiException {
-        OrderbookResponse response = client.market().orderbook(TestConstants.SPCE_FIGI);
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        Orderbook orderbook = client.market().orderbook(TestConstants.SPCE_FIGI);
+        Assert.assertNotNull(orderbook);
     }
 
     @Test
     public void candlesShouldReturnOk() throws IOException, ApiException, ParseException {
-        CandlesResponse response = client.market().candles(
+        Candles candles = client.market().candles(
                 TestConstants.SPCE_FIGI,
                 convertToDate("01/12/2020 10:00"),
                 convertToDate("02/12/2020 10:00"),
                 CandleResolution.HOUR);
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        Assert.assertNotNull(candles);
     }
 
     @Test
     public void searchByFigiShouldReturnOk() throws IOException, ApiException {
-        SearchMarketInstrumentResponse response = client.market().searchByFigi(TestConstants.SPCE_FIGI);
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        SearchMarketInstrument instrument = client.market().searchByFigi(TestConstants.SPCE_FIGI);
+        Assert.assertNotNull(instrument);
     }
 
     @Test
     public void searchByTickerShouldReturnOk() throws IOException, ApiException {
-        MarketInstrumentListResponse response = client.market().searchByTicker(TestConstants.SPCE_TICKER);
-        Assert.assertEquals(TestConstants.OK, response.getStatus());
+        MarketInstrumentList tickers = client.market().searchByTicker(TestConstants.SPCE_TICKER);
+        Assert.assertNotNull(tickers);
     }
 
     private Date convertToDate(String str) throws ParseException {
