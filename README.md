@@ -19,7 +19,7 @@ repositories {
 }
 ```
 
-  2. Add the Viber Bot library dependency
+  2. Add the tinkoff-invest-api library dependency
 
 ```gradle
 implementation 'com.github.galimru:tinkoff-invest-api:1.0.0'
