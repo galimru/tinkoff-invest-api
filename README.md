@@ -1,9 +1,34 @@
 # tinkoff-invest-api
-Tinkoff Invest client written on Java
+🚀 Tinkoff Invest client written on Java.
+
 
 ---
 
-### Dead simple example
+## Installation
+
+Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.0.0) repository 
+
+#### Gradle
+
+  1. Add the JitPack repository to your build file
+  
+```gradle
+repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+}
+```
+
+  2. Add the Viber Bot library dependency
+
+```gradle
+implementation 'com.github.galimru:tinkoff-invest-api:1.0.0'
+```
+
+_Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpack [documentation](https://jitpack.io/#galimru/tinkoff-invest-api) if you want use Maven_
+
+
+## Dead simple example
 
 ```java
     // create api client for sandbox environment
@@ -33,6 +58,7 @@ Tinkoff Invest client written on Java
     client.sandbox()
             .clear();
 ```
+
 
 ## Links
 
