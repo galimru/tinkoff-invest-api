@@ -1,5 +1,8 @@
 # 🚀 tinkoff-invest-api
+
 [![](https://jitpack.io/v/galimru/tinkoff-invest-api.svg)](https://jitpack.io/#galimru/tinkoff-invest-api)
+[![Build Status](https://travis-ci.org/galimru/tinkoff-invest-api.svg?branch=main)](https://travis-ci.org/galimru/tinkoff-invest-api)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Tinkoff Invest client written on Java.
 
