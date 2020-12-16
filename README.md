@@ -1,6 +1,7 @@
-# tinkoff-invest-api
-🚀 Tinkoff Invest client written on Java.
+# 🚀 tinkoff-invest-api
+[![](https://jitpack.io/v/galimru/tinkoff-invest-api.svg)](https://jitpack.io/#galimru/tinkoff-invest-api)
 
+Tinkoff Invest client written on Java.
 
 ---
 
