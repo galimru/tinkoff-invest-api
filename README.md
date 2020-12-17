@@ -68,3 +68,5 @@ _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpa
 ## Links
 
 [Swagger API](https://tinkoffcreditsystems.github.io/invest-openapi/swagger-ui/)
+
+[Official Java SDK](https://github.com/TinkoffCreditSystems/invest-openapi-java-sdk)
