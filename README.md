@@ -11,7 +11,7 @@ Tinkoff Invest client written on Java.
 
 ## Installation
 
-Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.2) repository 
+Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.3) repository 
 
 #### Gradle
 
@@ -27,7 +27,7 @@ repositories {
   2. Add the tinkoff-invest-api library dependency
 
 ```gradle
-implementation 'com.github.galimru:tinkoff-invest-api:1.1.2'
+implementation 'com.github.galimru:tinkoff-invest-api:1.1.3'
 ```
 
 _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpack [documentation](https://jitpack.io/#galimru/tinkoff-invest-api) if you want use Maven_
@@ -63,10 +63,10 @@ _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpa
         client.streaming()
                 .addCandleListener(event ->
                         System.out.println("High: " + event.getHigh()));
-        // subscribe on candle events for SPCE
+        // subscribe on candle events for TSLA
         client.streaming()
                 .subscribe(CandleSubscription
-                        .on(TestConstants.SPCE_FIGI)
+                        .on(figi)
                         .withInterval(CandleResolution.FIVE_MINUTES));
         // clear all sandbox accounts
         client.sandbox()

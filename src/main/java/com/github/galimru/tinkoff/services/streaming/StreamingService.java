@@ -19,28 +19,42 @@ public class StreamingService {
     private final Logger logger = LoggerFactory.getLogger(StreamingService.class);
 
     private final Gson gson;
-    private final WebSocket ws;
+    private final OkHttpClient client;
+
+    private final String url;
+    private final String token;
 
     private final Set<CandleListener> candleListeners = new HashSet<>();
     private final Set<OrderbookListener> orderbookListeners = new HashSet<>();
     private final Set<InstrumentInfoListener> instrumentInfoListeners = new HashSet<>();
 
+    private WebSocket ws;
+
     public StreamingService(OkHttpClient client, String url, String token) {
-        gson = new Gson();
+        this.client = client;
+        this.url = url;
+        this.token = token;
+        this.gson = new Gson();
+    }
+
+    public StreamingService start() {
         Request handshakeRequest = new Request.Builder()
                 .url(url)
                 .addHeader(HttpUtil.AUTHORIZATION_HEADER, HttpUtil.BEARER_PREFIX + token)
                 .build();
         ws = client.newWebSocket(handshakeRequest, new StreamingListener());
+        return this;
     }
 
     public StreamingService subscribe(Subscription<? extends EventRequest> subscription) {
+        startWebSocketIfNeeded();
         EventRequest request = subscription.buildSubscribeRequest();
         ws.send(gson.toJson(request));
         return this;
     }
 
     public StreamingService unsubscribe(Subscription<? extends EventRequest> subscription) {
+        startWebSocketIfNeeded();
         EventRequest request = subscription.buildUnsubscribeRequest();
         ws.send(gson.toJson(request));
         return this;
@@ -76,11 +90,23 @@ public class StreamingService {
         return this;
     }
 
+    private void startWebSocketIfNeeded() {
+        if (ws == null) {
+            start();
+        }
+    }
+
     class StreamingListener extends WebSocketListener {
 
         @Override
+        public void onOpen(@Nonnull WebSocket webSocket, @Nonnull Response response) {
+            logger.info("WebSocket connected");
+        }
+
+        @Override
         public void onFailure(@Nonnull WebSocket webSocket, Throwable t, @Nullable Response response) {
-            logger.error("WebSocket failure", t);
+            logger.error("WebSocket failure, trying to reconnect", t);
+            start();
         }
 
         @Override

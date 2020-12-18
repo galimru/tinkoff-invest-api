@@ -32,7 +32,6 @@ public class TinkoffInvestClient {
     private final StreamingService streamingService;
 
     private final boolean isSandbox;
-    private final boolean streamingEnabled;
 
     public static TinkoffInvestClient create(String token) {
         return create(token, false);
@@ -53,8 +52,6 @@ public class TinkoffInvestClient {
         isSandbox = builder.baseUrl
                 .toLowerCase()
                 .contains(SANDBOX_PATH);
-
-        streamingEnabled = builder.streamingEnabled;
 
         OkHttpClient client = builder.httpClient.newBuilder()
                 .addInterceptor(new AuthenticationInterceptor(builder.token))
@@ -78,16 +75,14 @@ public class TinkoffInvestClient {
         marketService = new MarketService(retrofit);
         operationsService = new OperationsService(retrofit);
         userService = new UserService(retrofit);
-        streamingService = !streamingEnabled ? null
-                : new StreamingService(builder.streamingHttpClient, builder.streamingUrl, builder.token);
+        streamingService = new StreamingService(
+                builder.streamingHttpClient,
+                builder.streamingUrl,
+                builder.token);
     }
 
     public boolean isSandbox() {
         return isSandbox;
-    }
-
-    public boolean isStreamingEnabled() {
-        return streamingEnabled;
     }
 
     public SandboxService sandbox() {
@@ -118,9 +113,6 @@ public class TinkoffInvestClient {
     }
 
     public StreamingService streaming() {
-        if (!streamingEnabled) {
-            throw new IllegalStateException("Streaming operations disabled");
-        }
         return streamingService;
     }
 
@@ -131,7 +123,6 @@ public class TinkoffInvestClient {
         private String token;
         private OkHttpClient httpClient;
         private OkHttpClient streamingHttpClient;
-        private Boolean streamingEnabled;
         private Level httpLoggingLevel;
 
         public Builder withBaseUrl(String baseUrl) {
@@ -159,11 +150,6 @@ public class TinkoffInvestClient {
             return this;
         }
 
-        public Builder withStreamingEnabled(Boolean streamingEnabled) {
-            this.streamingEnabled = streamingEnabled;
-            return this;
-        }
-
         public Builder withHttpLoggingLevel(Level httpLoggingLevel) {
             this.httpLoggingLevel = httpLoggingLevel;
             return this;
@@ -184,9 +170,6 @@ public class TinkoffInvestClient {
             }
             if (httpLoggingLevel == null) {
                 httpLoggingLevel = Level.NONE;
-            }
-            if (streamingEnabled == null) {
-                streamingEnabled = Boolean.TRUE;
             }
             Objects.requireNonNull(token, "token is null");
             return new TinkoffInvestClient(this);

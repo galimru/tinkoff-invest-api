@@ -26,17 +26,6 @@ public class TinkoffInvestClientTest {
         client.sandbox();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void streamingShouldThrowExceptionWhenStreamingDisabled() {
-        TinkoffInvestClient client = TinkoffInvestClient.builder()
-                .withBaseUrl(TinkoffInvestClient.SANDBOX_BASE_URL)
-                .withToken(TestConstants.TOKEN)
-                .withStreamingEnabled(false)
-                .build();
-
-        client.streaming();
-    }
-
     @Test
     @Ignore("do not need to test example")
     public void deadSimpleExample() throws IOException, ApiException {
