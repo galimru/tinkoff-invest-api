@@ -33,7 +33,7 @@ public class QueryConverterFactory extends Converter.Factory {
     private static final class DateQueryConverter implements Converter<Date, String> {
 
         private static final DateQueryConverter INSTANCE = new DateQueryConverter();
-        private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSSSSXXX");
+        private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSXXX");
 
         @Override
         public String convert(@Nonnull Date date) {

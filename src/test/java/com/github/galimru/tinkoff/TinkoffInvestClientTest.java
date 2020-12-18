@@ -8,6 +8,7 @@ import com.github.galimru.tinkoff.json.market.MarketInstrumentList;
 import com.github.galimru.tinkoff.services.LimitOrder;
 import com.github.galimru.tinkoff.services.MarketOrder;
 import com.github.galimru.tinkoff.services.streaming.CandleSubscription;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class TinkoffInvestClientTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void streamingShouldThrowExceptionWhenStreamingDisabled() throws InterruptedException {
+    public void streamingShouldThrowExceptionWhenStreamingDisabled() {
         TinkoffInvestClient client = TinkoffInvestClient.builder()
                 .withBaseUrl(TinkoffInvestClient.SANDBOX_BASE_URL)
                 .withToken(TestConstants.TOKEN)
@@ -37,6 +38,7 @@ public class TinkoffInvestClientTest {
     }
 
     @Test
+    @Ignore("do not need to test example")
     public void deadSimpleExample() throws IOException, ApiException {
         // create api client for sandbox environment
         TinkoffInvestClient client = TinkoffInvestClient.create(TestConstants.TOKEN, true);
@@ -65,10 +67,10 @@ public class TinkoffInvestClientTest {
         client.streaming()
                 .addCandleListener(event ->
                         System.out.println("High: " + event.getHigh()));
-        // subscribe on candle events for SPCE
+        // subscribe on candle events for TSLA
         client.streaming()
                 .subscribe(CandleSubscription
-                        .on(TestConstants.SPCE_FIGI)
+                        .on(figi)
                         .withInterval(CandleResolution.FIVE_MINUTES));
         // clear all sandbox accounts
         client.sandbox()

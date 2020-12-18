@@ -84,9 +84,13 @@ public class StreamingService {
         }
 
         @Override
+        public void onClosing(@Nonnull WebSocket webSocket, int code, @Nonnull String reason) {
+            ws.close(1000, reason);
+        }
+
+        @Override
         public void onMessage(@Nonnull WebSocket webSocket, @Nonnull String text) {
-            Type eventType = new TypeToken<EventResponse<Object>>() {
-            }.getType();
+            Type eventType = new TypeToken<EventResponse<Object>>() {}.getType();
             EventResponse<?> eventResponse = gson.fromJson(text, eventType);
             fireEvent(eventResponse, text);
         }

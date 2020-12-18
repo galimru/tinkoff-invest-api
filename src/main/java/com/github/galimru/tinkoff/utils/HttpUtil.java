@@ -25,9 +25,6 @@ public class HttpUtil {
                 throw new ServerException(response.code(), String.format("%d %s", response.code(), response.message()));
             }
             ErrorResponse errorResponse = gson.fromJson(errorBody.charStream(), ErrorResponse.class);
-            if (errorResponse == null) {
-                throw new IllegalStateException("Cannot parse error response from http response");
-            }
             Error error = errorResponse.getPayload();
             throw new ApiException(error.getCode(), error.getMessage());
         }

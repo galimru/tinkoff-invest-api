@@ -11,7 +11,7 @@ Tinkoff Invest client written on Java.
 
 ## Installation
 
-Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.1) repository 
+Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.2) repository 
 
 #### Gradle
 
@@ -27,7 +27,7 @@ repositories {
   2. Add the tinkoff-invest-api library dependency
 
 ```gradle
-implementation 'com.github.galimru:tinkoff-invest-api:1.1.1'
+implementation 'com.github.galimru:tinkoff-invest-api:1.1.2'
 ```
 
 _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpack [documentation](https://jitpack.io/#galimru/tinkoff-invest-api) if you want use Maven_

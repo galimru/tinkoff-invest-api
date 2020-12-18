@@ -5,24 +5,33 @@ import com.github.galimru.tinkoff.http.Level;
 import com.github.galimru.tinkoff.json.common.BrokerAccountType;
 import com.github.galimru.tinkoff.json.common.Currency;
 import com.github.galimru.tinkoff.json.sandbox.SandboxAccount;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 
 public class SendboxServiceTest {
 
-    private TinkoffInvestClient client;
+    private static TinkoffInvestClient client;
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() throws IOException, ApiException {
         client = TinkoffInvestClient.builder()
                 .withBaseUrl(TinkoffInvestClient.SANDBOX_BASE_URL)
                 .withToken(TestConstants.TOKEN)
                 .withHttpLoggingLevel(Level.BASIC)
                 .build();
+    }
+
+    @AfterClass
+    public static void destroy() throws IOException, ApiException {
+        client.sandbox().clear();
+    }
+
+    @After
+    public void after() throws InterruptedException {
+        // delay each test to avoid error 429 Too Many Requests
+        Thread.sleep(TestConstants.TESTS_DELAY);
     }
 
     @Test

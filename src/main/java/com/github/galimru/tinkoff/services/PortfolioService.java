@@ -32,11 +32,11 @@ public class PortfolioService {
         return response.body().getPayload();
     }
 
-    public Currencies getCurrencies() throws IOException, ApiException {
-        return getCurrencies(null);
+    public Currencies currencies() throws IOException, ApiException {
+        return currencies(null);
     }
 
-    public Currencies getCurrencies(String brokerAccountId) throws IOException, ApiException {
+    public Currencies currencies(String brokerAccountId) throws IOException, ApiException {
         Response<PortfolioCurrenciesResponse> response = api.currencies(brokerAccountId).execute();
 
         HttpUtil.throwErrorIfNeeded(response);
