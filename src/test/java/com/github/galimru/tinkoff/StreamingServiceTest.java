@@ -88,4 +88,33 @@ public class StreamingServiceTest {
         Assert.assertTrue(invoked.get());
     }
 
+    @Test
+    public void twoSubscriptionsShouldBeInvoked() throws InterruptedException {
+        // subscription on candle
+        AtomicBoolean candleInvoked = new AtomicBoolean();
+        client.streaming().addCandleListener(event -> {
+            System.out.println(event);
+            candleInvoked.set(true);
+            Assert.assertNotNull(event);
+        });
+        client.streaming().subscribe(
+                CandleSubscription
+                        .on(TestConstants.SPCE_FIGI)
+                        .withInterval(CandleResolution.FIVE_MINUTES));
+        // subscription on instrument info
+        AtomicBoolean instrumentInfoInvoked = new AtomicBoolean();
+        client.streaming().addInstrumentInfoListener(event -> {
+            System.out.println(event);
+            instrumentInfoInvoked.set(true);
+            Assert.assertNotNull(event);
+        });
+        client.streaming().subscribe(
+                InstrumentInfoSubscription
+                        .on(TestConstants.SPCE_FIGI));
+
+        Thread.sleep(5000);
+        Assert.assertTrue(candleInvoked.get());
+        Assert.assertTrue(instrumentInfoInvoked.get());
+    }
+
 }
