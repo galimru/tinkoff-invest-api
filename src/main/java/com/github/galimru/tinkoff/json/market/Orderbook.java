@@ -1,7 +1,5 @@
 package com.github.galimru.tinkoff.json.market;
 
-import com.github.galimru.tinkoff.json.orders.OrdersResponse;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -9,8 +7,8 @@ public class Orderbook {
 
     private String figi;
     private Integer depth;
-    private List<OrdersResponse> bids;
-    private List<OrdersResponse> asks;
+    private List<OrderResponse> bids;
+    private List<OrderResponse> asks;
     private TradeStatus tradeStatus;
     private BigDecimal minPriceIncrement;
     private BigDecimal faceValue;
@@ -35,19 +33,19 @@ public class Orderbook {
         this.depth = depth;
     }
 
-    public List<OrdersResponse> getBids() {
+    public List<OrderResponse> getBids() {
         return bids;
     }
 
-    public void setBids(List<OrdersResponse> bids) {
+    public void setBids(List<OrderResponse> bids) {
         this.bids = bids;
     }
 
-    public List<OrdersResponse> getAsks() {
+    public List<OrderResponse> getAsks() {
         return asks;
     }
 
-    public void setAsks(List<OrdersResponse> asks) {
+    public void setAsks(List<OrderResponse> asks) {
         this.asks = asks;
     }
 
