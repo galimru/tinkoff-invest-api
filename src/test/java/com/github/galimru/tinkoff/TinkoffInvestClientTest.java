@@ -3,9 +3,11 @@ package com.github.galimru.tinkoff;
 import com.github.galimru.tinkoff.exceptions.ApiException;
 import com.github.galimru.tinkoff.json.common.BrokerAccountType;
 import com.github.galimru.tinkoff.json.common.Currency;
+import com.github.galimru.tinkoff.json.market.CandleResolution;
 import com.github.galimru.tinkoff.json.market.MarketInstrumentList;
 import com.github.galimru.tinkoff.services.LimitOrder;
 import com.github.galimru.tinkoff.services.MarketOrder;
+import com.github.galimru.tinkoff.services.streaming.CandleSubscription;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -21,6 +23,17 @@ public class TinkoffInvestClientTest {
                 .build();
 
         client.sandbox();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void streamingShouldThrowExceptionWhenStreamingDisabled() throws InterruptedException {
+        TinkoffInvestClient client = TinkoffInvestClient.builder()
+                .withBaseUrl(TinkoffInvestClient.SANDBOX_BASE_URL)
+                .withToken(TestConstants.TOKEN)
+                .withStreamingEnabled(false)
+                .build();
+
+        client.streaming();
     }
 
     @Test
@@ -48,6 +61,15 @@ public class TinkoffInvestClientTest {
                         .sell(figi)
                         .quantity(1)
                         .price(BigDecimal.valueOf(800.45)));
+        // add streaming listener for candle events
+        client.streaming()
+                .addCandleListener(event ->
+                        System.out.println("High: " + event.getHigh()));
+        // subscribe on candle events for SPCE
+        client.streaming()
+                .subscribe(CandleSubscription
+                        .on(TestConstants.SPCE_FIGI)
+                        .withInterval(CandleResolution.FIVE_MINUTES));
         // clear all sandbox accounts
         client.sandbox()
                 .clear();

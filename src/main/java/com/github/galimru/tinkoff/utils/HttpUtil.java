@@ -10,6 +10,9 @@ import retrofit2.Response;
 
 public class HttpUtil {
 
+    public final static String AUTHORIZATION_HEADER = "Authorization";
+    public final static String BEARER_PREFIX = "Bearer ";
+
     private final static Gson gson = new Gson();
 
     private HttpUtil() {

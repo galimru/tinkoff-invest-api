@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 public enum CandleResolution {
     @SerializedName("1min")
-    MIN_1,
+    ONE_MINUTE,
     @SerializedName("2min")
-    MIN_2,
+    TWO_MINUTES,
     @SerializedName("3min")
-    MIN_3,
+    THREE_MINUTES,
     @SerializedName("5min")
-    MIN_5,
+    FIVE_MINUTES,
     @SerializedName("10min")
-    MIN_10,
+    TEN_MINUTES,
     @SerializedName("15min")
-    MIN_15,
+    FIFTEEN_MINUTES,
     @SerializedName("30min")
-    MIN_30,
+    THIRTY_MINUTES,
     @SerializedName("hour")
     HOUR,
     @SerializedName("day")

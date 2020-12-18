@@ -5,6 +5,7 @@ import com.github.galimru.tinkoff.http.HttpLoggingInterceptor;
 import com.github.galimru.tinkoff.http.Level;
 import com.github.galimru.tinkoff.http.QueryConverterFactory;
 import com.github.galimru.tinkoff.services.*;
+import com.github.galimru.tinkoff.services.streaming.StreamingService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
@@ -17,7 +18,7 @@ public class TinkoffInvestClient {
 
     public final static String PRODUCTION_BASE_URL = "https://api-invest.tinkoff.ru/openapi/";
     public final static String SANDBOX_BASE_URL = "https://api-invest.tinkoff.ru/openapi/sandbox/";
-    public final static String STREAMING_BASE_URL = "wss://api-invest.tinkoff.ru/openapi/md/v1/md-openapi/ws";
+    public final static String STREAMING_URL = "wss://api-invest.tinkoff.ru/openapi/md/v1/md-openapi/ws";
 
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSSSSSXXX";
     private static final String SANDBOX_PATH = "/sandbox";
@@ -28,8 +29,10 @@ public class TinkoffInvestClient {
     private final MarketService marketService;
     private final OperationsService operationsService;
     private final UserService userService;
+    private final StreamingService streamingService;
 
     private final boolean isSandbox;
+    private final boolean streamingEnabled;
 
     public static TinkoffInvestClient create(String token) {
         return create(token, false);
@@ -47,6 +50,12 @@ public class TinkoffInvestClient {
     }
 
     private TinkoffInvestClient(Builder builder) {
+        isSandbox = builder.baseUrl
+                .toLowerCase()
+                .contains(SANDBOX_PATH);
+
+        streamingEnabled = builder.streamingEnabled;
+
         OkHttpClient client = builder.httpClient.newBuilder()
                 .addInterceptor(new AuthenticationInterceptor(builder.token))
                 .addNetworkInterceptor(new HttpLoggingInterceptor(builder.httpLoggingLevel))
@@ -69,14 +78,16 @@ public class TinkoffInvestClient {
         marketService = new MarketService(retrofit);
         operationsService = new OperationsService(retrofit);
         userService = new UserService(retrofit);
-
-        isSandbox = builder.baseUrl
-                .toLowerCase()
-                .contains(SANDBOX_PATH);
+        streamingService = !streamingEnabled ? null
+                : new StreamingService(builder.streamingHttpClient, builder.streamingUrl, builder.token);
     }
 
     public boolean isSandbox() {
         return isSandbox;
+    }
+
+    public boolean isStreamingEnabled() {
+        return streamingEnabled;
     }
 
     public SandboxService sandbox() {
@@ -106,15 +117,30 @@ public class TinkoffInvestClient {
         return userService;
     }
 
+    public StreamingService streaming() {
+        if (!streamingEnabled) {
+            throw new IllegalStateException("Streaming operations disabled");
+        }
+        return streamingService;
+    }
+
     public static class Builder {
 
-        private OkHttpClient httpClient = new OkHttpClient();
-        private String baseUrl = PRODUCTION_BASE_URL;
+        private String baseUrl;
+        private String streamingUrl;
         private String token;
-        private Level httpLoggingLevel = Level.NONE;
+        private OkHttpClient httpClient;
+        private OkHttpClient streamingHttpClient;
+        private Boolean streamingEnabled;
+        private Level httpLoggingLevel;
 
         public Builder withBaseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
+            return this;
+        }
+
+        public Builder withStreamingUrl(String streamingUrl) {
+            this.streamingUrl = streamingUrl;
             return this;
         }
 
@@ -128,16 +154,41 @@ public class TinkoffInvestClient {
             return this;
         }
 
+        public Builder withStreamingHttpClient(OkHttpClient streamingHttpClient) {
+            this.streamingHttpClient = streamingHttpClient;
+            return this;
+        }
+
+        public Builder withStreamingEnabled(Boolean streamingEnabled) {
+            this.streamingEnabled = streamingEnabled;
+            return this;
+        }
+
         public Builder withHttpLoggingLevel(Level httpLoggingLevel) {
             this.httpLoggingLevel = httpLoggingLevel;
             return this;
         }
 
         public TinkoffInvestClient build() {
-            Objects.requireNonNull(baseUrl, "baseUrl is null");
+            if (baseUrl == null) {
+                baseUrl = PRODUCTION_BASE_URL;
+            }
+            if (streamingUrl == null) {
+                streamingUrl = STREAMING_URL;
+            }
+            if (httpClient == null) {
+                httpClient = new OkHttpClient();
+            }
+            if (streamingHttpClient == null) {
+                streamingHttpClient = new OkHttpClient();
+            }
+            if (httpLoggingLevel == null) {
+                httpLoggingLevel = Level.NONE;
+            }
+            if (streamingEnabled == null) {
+                streamingEnabled = Boolean.TRUE;
+            }
             Objects.requireNonNull(token, "token is null");
-            Objects.requireNonNull(httpClient, "httpClient is null");
-            Objects.requireNonNull(httpLoggingLevel, "httpLoggingLevel is null");
             return new TinkoffInvestClient(this);
         }
     }

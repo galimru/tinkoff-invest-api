@@ -11,7 +11,7 @@ Tinkoff Invest client written on Java.
 
 ## Installation
 
-Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.0.0) repository 
+Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.0) repository 
 
 #### Gradle
 
@@ -27,7 +27,7 @@ repositories {
   2. Add the tinkoff-invest-api library dependency
 
 ```gradle
-implementation 'com.github.galimru:tinkoff-invest-api:1.0.0'
+implementation 'com.github.galimru:tinkoff-invest-api:1.1.0'
 ```
 
 _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpack [documentation](https://jitpack.io/#galimru/tinkoff-invest-api) if you want use Maven_
@@ -36,32 +36,41 @@ _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpa
 ## Dead simple example
 
 ```java
-    // create api client for sandbox environment
-    TinkoffInvestClient client = TinkoffInvestClient.create(TestConstants.TOKEN, true);
-    // register new sandbox broker account
-    client.sandbox()
-            .register(BrokerAccountType.TINKOFF);
-    // set broker account balance to $1000.55
-    client.sandbox()
-            .setCurrencyBalance(Currency.USD, BigDecimal.valueOf(1000.55));
-    // search figi by ticker TSLA (Tesla)
-    MarketInstrumentList resultList = client.market()
-            .searchByTicker("TSLA");
-    String figi = resultList.getInstruments().get(0).getFigi();
-    // buy 1 lot of Tesla using market order
-    client.orders()
-            .place(MarketOrder
-                    .buy(figi)
-                    .quantity(1));
-    // sell 1 lot of Tesla using limit order
-    client.orders()
-            .place(LimitOrder
-                    .sell(figi)
-                    .quantity(1)
-                    .price(BigDecimal.valueOf(800.45)));
-    // clear all sandbox accounts
-    client.sandbox()
-            .clear();
+        // create api client for sandbox environment
+        TinkoffInvestClient client = TinkoffInvestClient.create(TestConstants.TOKEN, true);
+        // register new sandbox broker account
+        client.sandbox()
+                .register(BrokerAccountType.TINKOFF);
+        // set broker account balance to $1000.55
+        client.sandbox()
+                .setCurrencyBalance(Currency.USD, BigDecimal.valueOf(1000.55));
+        // search figi by ticker TSLA (Tesla)
+        MarketInstrumentList resultList = client.market()
+                .searchByTicker("TSLA");
+        String figi = resultList.getInstruments().get(0).getFigi();
+        // buy 1 lot of Tesla using market order
+        client.orders()
+                .place(MarketOrder
+                        .buy(figi)
+                        .quantity(1));
+        // sell 1 lot of Tesla using limit order
+        client.orders()
+                .place(LimitOrder
+                        .sell(figi)
+                        .quantity(1)
+                        .price(BigDecimal.valueOf(800.45)));
+        // add streaming listener for candle events
+        client.streaming()
+                .addCandleListener(event ->
+                        System.out.println("High: " + event.getHigh()));
+        // subscribe on candle events for SPCE
+        client.streaming()
+                .subscribe(CandleSubscription
+                        .on(TestConstants.SPCE_FIGI)
+                        .withInterval(CandleResolution.FIVE_MINUTES));
+        // clear all sandbox accounts
+        client.sandbox()
+                .clear();
 ```
 
 
