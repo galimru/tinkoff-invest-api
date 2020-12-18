@@ -20,7 +20,7 @@ public class TinkoffInvestClient {
     public final static String SANDBOX_BASE_URL = "https://api-invest.tinkoff.ru/openapi/sandbox/";
     public final static String STREAMING_URL = "wss://api-invest.tinkoff.ru/openapi/md/v1/md-openapi/ws";
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss.SSSXXX";
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
     private static final String SANDBOX_PATH = "/sandbox";
 
     private final SandboxService sandboxService;

@@ -11,7 +11,7 @@ Tinkoff Invest client written on Java.
 
 ## Installation
 
-Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.3) repository 
+Import the library to your project using [jitpack](https://jitpack.io/#galimru/tinkoff-invest-api/1.1.4) repository 
 
 #### Gradle
 
@@ -27,7 +27,7 @@ repositories {
   2. Add the tinkoff-invest-api library dependency
 
 ```gradle
-implementation 'com.github.galimru:tinkoff-invest-api:1.1.3'
+implementation 'com.github.galimru:tinkoff-invest-api:1.1.4'
 ```
 
 _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpack [documentation](https://jitpack.io/#galimru/tinkoff-invest-api) if you want use Maven_
@@ -73,9 +73,21 @@ _Note: The JitPack supports both Gradle/Maven build tools, please refer to jitpa
                 .clear();
 ```
 
+## License
+
+Apache License 2.0
+
+_Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License._
+
 
 ## Links
 
+[OpenAPI Documentation](https://tinkoffcreditsystems.github.io/invest-openapi/)
+
 [Swagger API](https://tinkoffcreditsystems.github.io/invest-openapi/swagger-ui/)
 
-[Official Java SDK](https://github.com/TinkoffCreditSystems/invest-openapi-java-sdk)
+[Official OpenAPI Java SDK](https://github.com/TinkoffCreditSystems/invest-openapi-java-sdk)
