@@ -29,6 +29,7 @@ public class StreamingServiceTest {
     public void candleSubscriptionShouldBeInvoked() throws InterruptedException {
         AtomicBoolean invoked = new AtomicBoolean();
         client.streaming().addCandleListener(event -> {
+            System.out.println(event);
             invoked.set(true);
             Assert.assertNotNull(event);
         });
@@ -45,6 +46,7 @@ public class StreamingServiceTest {
     public void orderbookSubscriptionShouldBeInvoked() throws InterruptedException {
         AtomicBoolean invoked = new AtomicBoolean();
         client.streaming().addOrderbookListener(event -> {
+            System.out.println(event);
             invoked.set(true);
             Assert.assertNotNull(event);
         });
@@ -60,6 +62,7 @@ public class StreamingServiceTest {
     public void instrumentInfoSubscriptionShouldBeInvoked() throws InterruptedException {
         AtomicBoolean invoked = new AtomicBoolean();
         client.streaming().addInstrumentInfoListener(event -> {
+            System.out.println(event);
             invoked.set(true);
             Assert.assertNotNull(event);
         });

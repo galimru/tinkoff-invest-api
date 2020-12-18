@@ -85,7 +85,6 @@ public class StreamingService {
 
         @Override
         public void onMessage(@Nonnull WebSocket webSocket, @Nonnull String text) {
-            logger.info(text);
             Type eventType = new TypeToken<EventResponse<Object>>() {
             }.getType();
             EventResponse<?> eventResponse = gson.fromJson(text, eventType);
